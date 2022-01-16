@@ -9,3 +9,5 @@ sidebar: false
 [执行上下文、作用域以及闭包](./执行上下文、作用域以及闭包/execution_context_scope_and_closure.md)
 
 [继承与原型链](./继承与原型链/Inheritance_and_the_prototype_chain.md)
+
+[Promise 对象](./Promise%20对象/promise_object.md)
