@@ -24,6 +24,10 @@ export default defineUserConfig<DefaultThemeOptions>({
                 text: 'TypeScript',
                 link: '/typescript/',
               },
+              {
+                text: 'CSS',
+                link: '/css',
+              },
             ],
           },
           {
