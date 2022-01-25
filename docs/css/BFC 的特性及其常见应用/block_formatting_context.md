@@ -128,6 +128,7 @@ MDN web docs 现在给出创建BFC的方法有以下几种（[原文链接](http
 #father .right {
   background-color: #ccc;
   height: 120px;
+  overflow: auto;
 }
 ```
 
