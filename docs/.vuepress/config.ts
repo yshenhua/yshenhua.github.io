@@ -1,13 +1,13 @@
-import { defineUserConfig } from 'vuepress'
-import type { DefaultThemeOptions } from 'vuepress'
+import { defineUserConfig } from 'vuepress';
+import { defaultTheme } from '@vuepress/theme-default';
 
-export default defineUserConfig<DefaultThemeOptions>({
+export default defineUserConfig({
   base: '/',
-  lang: 'en-US',
+  lang: 'zh',
   title: '文燚的博客',
   description: 'Just playing around',
-
-  themeConfig: {
+  head: [['link', { rel: 'icon', href: 'https://github.githubassets.com/favicons/favicon.png' }]],
+  theme: defaultTheme({
     logo: 'https://avatars.githubusercontent.com/u/23024424?v=4',
     navbar: [
       {
@@ -77,5 +77,10 @@ export default defineUserConfig<DefaultThemeOptions>({
         ],
       },
     ],
-  },
-})
+    repo: 'yshenhua',
+    editLink: false,
+    lastUpdatedText: '上次更新',
+    contributorsText: '作者',
+    toggleColorMode: '',
+  }),
+});

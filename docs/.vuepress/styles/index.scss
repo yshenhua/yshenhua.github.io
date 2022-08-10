@@ -1,11 +1,23 @@
 .theme-default-content {
-    img[alt="文燚的博客"] {
-        width: 50%;
-        transform: translateX(50%);
-    }
+  --meta-height: 5rem;
 
-    .motto {
-        text-align: center;
-        font-size: 1.5rem;
-    }
+  @media (max-width: 959px) {
+    --meta-height: 13rem;
+  }
+
+  @media (max-width: 719px) {
+    --meta-height: 14rem;
+  }
+
+  min-height: calc(100vh - var(--navbar-height) - var(--meta-height));
+
+  img[alt='文燚的博客'] {
+    width: 50%;
+    transform: translateX(50%);
+  }
+
+  .motto {
+    text-align: center;
+    font-size: 1.5rem;
+  }
 }
