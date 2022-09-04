@@ -33,6 +33,6 @@
     ]
   },
   "lint-staged": {
-    "*.{json,ts,scss,md,yml}": "prettier --write"
+    "*.{json,ts,vue,scss,md,yml}": "prettier --write"
   }
 }
