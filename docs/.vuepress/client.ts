@@ -1,8 +1,10 @@
 import { defineClientConfig } from '@vuepress/client';
-import HomeView from './components/HomeView.vue';
 
 export default defineClientConfig({
-  enhance({ app }) {
-    app.component('HomeView', HomeView);
+  async enhance({ app }) {
+    if (!__VUEPRESS_SSR__) {
+      const HomeViewModule = await import('./components/HomeView.vue');
+      app.component('HomeView', HomeViewModule.default);
+    }
   },
 });
