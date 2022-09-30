@@ -61,7 +61,7 @@ root.render(<MyComponent />);
 
 #### 属性值 true 省略
 
-如果你没给元素属性赋值，它的默认值是 true。（React 官方不建议省略属性值。这样实现只是为了保持和 HTML 中标签属性的行为一致。）
+如果你没给元素属性赋值，它的默认值是 `true`。（React 官方不建议省略属性值。这样实现只是为了保持和 HTML 中标签属性的行为一致。）
 
 #### 属性展开
 
@@ -135,9 +135,65 @@ MyComponent.defaultProps = {
 };
 ```
 
+### Render Props
+
+Render Props 是一种在 React 中用于复用组件逻辑的技巧，实现方法为——在组件中实现复用的状态逻辑代码，然后将一个返回 React 元素的函数当作组件的 prop 值传入，在组件内部通过调用此函数来实现需要的渲染。例如：
+
+```tsx:no-line-numbers
+import type { ReactElement } from 'react';
+import { Component } from 'react';
+
+interface MouseProps {
+  render: (mouse: MouseState) => ReactElement;
+}
+interface MouseState {
+  x: number;
+  y: number;
+}
+class Mouse extends Component<MouseProps, MouseState> {
+  state = { x: 0, y: 0 };
+
+  handleMouseMove = (event) => {
+    this.setState({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  };
+
+  render() {
+    return (
+      <div style={{ height: '100vh' }} onMouseMove={this.handleMouseMove}>
+        {this.props.render(this.state)}
+      </div>
+    );
+  }
+}
+
+class MyComponent extends Component {
+  render() {
+    return (
+      <Mouse
+        render={(mouse) => (
+          <>
+            <h1>移动鼠标!</h1>
+            <p>
+              当前的鼠标位置是 ({mouse.x}, {mouse.y})
+            </p>
+          </>
+        )}
+      />
+    );
+  }
+}
+```
+
+例中 `<Mouse>` 组件封装了监听 `mousemove` 事件和存储鼠标 (x, y) 位置的行为，并且可以通过 `render` 方法 让 `<Mouse>` 能够动态决定什么需要渲染。
+
+Render Props 也可以和 `props.children` 结合使用。
+
 ## State
 
-State 与 props 类似，都是一个用来保存信息的对象，这个对象可以控制组件的渲染输出。但是 state 是私有的，是在组件内被组件自己管理的。当 state 改变了，该组件（包括其后代组件）就会重新渲染。类组件使用父类 `Component` 中定义的 `state` 属性和 `setState()` 方法来初始化和更新组件状态：
+State 与 props 类似，都是一个用来保存信息的对象，这个对象可以控制组件的渲染输出。但是 state 是私有的，是在组件内被组件自己管理的。当 state 改变了，该组件（包括其后代组件）就会重新渲染。类组件使用父类 `Component` 中定义的 `state` 属性（默认值为 `null`）和 `setState()` 方法来初始化和更新组件状态：
 
 ```tsx:no-line-numbers
 import { Component } from 'react';
@@ -230,7 +286,7 @@ handleSubmit(e: React.FormEvent<HTMLFormElement>) {
 }
 ```
 
-当然你也可以在回调中使用箭头函数，但每次渲染组件时都会创建不同的回调函数。在大多数情况下，这没什么问题，但如果该回调函数作为 prop 传入子组件时，这些组件可能会进行额外的重新渲染。比如[这个例子](https://stackblitz.com/edit/react-ts-k52q9l?file=src%2FApp.tsx)中使用 `React.PureComponent` 的组件会因该回调函数的影响而无法达到预期效果。所以建议尽量不要使用该方式以防出现性能问题。
+当然你也可以在回调中使用箭头函数，但每次渲染组件时都会创建不同的回调函数。在大多数情况下，这没什么问题，但如果该回调函数作为 prop 传入子组件时，这些组件可能会进行额外的重新渲染。比如[这个例子](https://stackblitz.com/edit/react-ts-k52q9l?file=src%2FApp.tsx)中使用 `React.PureComponent` 的组件会因该回调函数的影响而无法达到预期效果。所以建议尽量不要使用该方式以防出现性能问题。前面 [Render Props](#render-props) 的例子也存在这个问题。
 
 ### 向事件处理程序传递参数
 
@@ -308,28 +364,251 @@ React 会在组件挂载时给 `current` 属性传入对应的值，并在组件
 
 ### 挂载
 
-挂载阶段组件实例被创建并插入 DOM 中，这个过程中 React 会依次调用 [`constructor()`](https://reactjs.org/docs/react-component.html#constructor)、[`static getDerivedStateFromProps()`](https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops)、[`render()`](https://reactjs.org/docs/react-component.html#render)、[`componentDidMount()`](https://reactjs.org/docs/react-component.html#componentdidmount)。
+挂载阶段组件实例被创建并插入 DOM 中，这个过程中 React 会依次调用 [`constructor()`](https://reactjs.org/docs/react-component.html#constructor)、[`static getDerivedStateFromProps()`](https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops)、[`render()`](https://reactjs.org/docs/react-component.html#render)、[`componentDidMount()`](https://reactjs.org/docs/react-component.html#componentdidmount)。如果该组件存在子组件，执行 `render()` 之后会开始挂载子组件，待子组件挂载完成之后触发 `componentDidMount()` 的调用，例如：
+
+```tsx:no-line-numbers
+import { Component } from 'react';
+
+class MyChildComponent extends Component {
+  state = {};
+
+  constructor(props) {
+    console.log('child constructor');
+    super(props);
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('child getDerivedStateFromProps');
+    return null;
+  }
+
+  componentDidMount() {
+    console.log('child componentDidMount');
+  }
+
+  render() {
+    console.log('child render');
+    return <span>个</span>;
+  }
+}
+
+class MyComponent extends Component {
+  state = { count: 0 };
+
+  constructor(props) {
+    console.log('constructor');
+    super(props);
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('getDerivedStateFromProps');
+    return null;
+  }
+
+  componentDidMount() {
+    console.log('componentDidMount');
+  }
+
+  render() {
+    console.log('render');
+    const { count } = this.state;
+    return (
+      <>
+        <span>{count}</span>
+        <MyChildComponent />
+      </>
+    );
+  }
+}
+```
+
+输出结果为：
+
+```bash:no-line-numbers
+constructor
+getDerivedStateFromProps
+render
+child constructor
+child getDerivedStateFromProps
+child render
+child componentDidMount
+componentDidMount
+```
 
 `getDerivedStateFromProps` 的存在只有一个目的：让组件在 props 变化时更新 state，比如[根据 props 变化得出当前滚动方向](https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html#updating-state-based-on-props)和[根据 props 变化加载外部数据](https://reactjs.org/blog/2018/03/27/update-on-async-rendering.html#fetching-external-data-when-props-change)。
 
 ### 更新
 
-当组件的 props 或 state 发生变化时会触发更新。更新阶段的生命周期调用顺序为：[`static getDerivedStateFromProps()`](https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops)、[`shouldComponentUpdate()`](https://reactjs.org/docs/react-component.html#shouldcomponentupdate)、[`render()`](https://reactjs.org/docs/react-component.html#render)、[`getSnapshotBeforeUpdate()`](https://reactjs.org/docs/react-component.html#getsnapshotbeforeupdate)、[`componentDidUpdate()`](https://reactjs.org/docs/react-component.html#componentdidupdate)。
+当组件的 props 或 state 发生变化时会触发更新。更新阶段的生命周期调用顺序为：[`static getDerivedStateFromProps()`](https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops)、[`shouldComponentUpdate()`](https://reactjs.org/docs/react-component.html#shouldcomponentupdate)、[`render()`](https://reactjs.org/docs/react-component.html#render)、[`getSnapshotBeforeUpdate()`](https://reactjs.org/docs/react-component.html#getsnapshotbeforeupdate)、[`componentDidUpdate()`](https://reactjs.org/docs/react-component.html#componentdidupdate)。如果该组件存在子组件，执行 `render()` 之后会开始更新子组件，待子组件的 `render()` 执行之后，依次触发子组件和父组件的 `getSnapshotBeforeUpdate()`，之后再依次触发子组件和父组件的 `componentDidUpdate()`，例如：
 
-`shouldComponentUpdate()` 的返回值用来判断是否重新渲染组件，默认为 true。首次渲染或使用 [`forceUpdate()`](https://reactjs.org/docs/react-component.html#forceupdate) 时不会调用该方法。
+```tsx:no-line-numbers
+import { Component } from 'react';
+
+class MyChildComponent extends Component {
+  state = {};
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('child getDerivedStateFromProps');
+    return null;
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('child shouldComponentUpdate');
+    return true;
+  }
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    console.log('child getSnapshotBeforeUpdate');
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log('child componentDidUpdate');
+  }
+
+  render() {
+    console.log('child render');
+    return <span>个</span>;
+  }
+}
+
+class MyComponent extends Component<{}, { count: number }> {
+  state = { count: 0 };
+
+  updateState = () => {
+    console.log('########## Update State ##########');
+    this.setState(({ count }) => ({ count: count + 1 }));
+  };
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('getDerivedStateFromProps');
+    return null;
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('shouldComponentUpdate');
+    return true;
+  }
+
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    console.log('getSnapshotBeforeUpdate');
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log('componentDidUpdate');
+  }
+
+  render() {
+    console.log('render');
+    const { count } = this.state;
+    return (
+      <div>
+        <span>{count}</span>
+        <MyChildComponent />
+        <button onClick={this.updateState}>Update State</button>
+      </div>
+    );
+  }
+}
+```
+
+点击 Update State 按钮后的输出结果为：
+
+```bash:no-line-numbers
+getDerivedStateFromProps
+shouldComponentUpdate
+render
+child getDerivedStateFromProps
+child shouldComponentUpdate
+child render
+child getSnapshotBeforeUpdate
+getSnapshotBeforeUpdate
+child componentDidUpdate
+componentDidUpdate
+```
+
+`shouldComponentUpdate()` 的返回值用来判断是否重新渲染组件，默认为 `true`。首次渲染或使用 [`forceUpdate()`](https://reactjs.org/docs/react-component.html#forceupdate) 时不会调用该方法。
 
 `getSnapshotBeforeUpdate()` 能在发生更改之前从 DOM 中捕获一些信息（例如，滚动位置）。它的返回值将作为参数传递给 `componentDidUpdate()`。
 
-调用 `forceUpdate()` 强制让组件重新渲染，会跳过该组件的 `shouldComponentUpdate()`。在 `componentDidUpdate()` 之后会调用 `forceUpdate()` 的回调函数。
+调用 `forceUpdate()` 强制让组件重新渲染，会跳过该组件的 `shouldComponentUpdate()`（不影响后代组件）。在 `componentDidUpdate()` 之后会调用 `forceUpdate()` 的回调函数。
 
 ### 卸载
 
 卸载阶段组件从 DOM 中移除，会调用 [`componentWillUnmount() `](https://reactjs.org/docs/react-component.html#componentwillunmount)。
 
-### 错误处理
-
-另外，[`static getDerivedStateFromError()`](https://reactjs.org/docs/react-component.html#static-getderivedstatefromerror) 和 [`componentDidCatch()`](https://zh-hans.reactjs.org/docs/react-component.html#componentdidcatch) 会在后代组件的生命周期抛出错误后被调用（当前组件的错误无法捕获）。
-
 ### 函数组件的生命周期
 
 函数组件没有生命周期方法，但可以通过 [`useEffect`](https://reactjs.org/docs/hooks-reference.html#useeffect) 等 [Hooks](https://reactjs.org/docs/hooks-intro.html) 去模拟生命周期。
+
+## 错误边界
+
+错误边界是一种 React 组件，这种组件可以捕获后代组件的错误（整个子组件树的渲染期间、生命周期方法以及构造函数中的错误），并根据需要打印错误、展示降级 UI，而不是渲染那些发生崩溃的子组件。
+
+如果一个类组件中定义了 [`static getDerivedStateFromError()`](https://reactjs.org/docs/react-component.html#static-getderivedstatefromerror) 或 [`componentDidCatch()`](https://reactjs.org/docs/react-component.html#componentdidcatch) 这两个生命周期方法中的任意一个（或两个）时，那么它就变成一个错误边界。当抛出错误后，请使用 `static getDerivedStateFromError()` 渲染备用 UI，使用 `componentDidCatch()` 打印错误信息。[在 CodeSandbox 中查看例子](https://codesandbox.io/s/react18-error-boundaries-72vj9e?file=/src/ErrorBoundary.tsx)
+
+## 高阶组件
+
+高阶组件（HOC）是 React 中用于复用组件逻辑的一种高级技巧。从语法上讲，高阶组件是一个函数。函数内部返回一个新的组件，该组件提供复用的状态逻辑代码。被包装组件作为函数参数传入，通过 props 接收复用的状态。将前面带有 render prop 的 `<Mouse>` 组件的功能用 withMouse HOC 来实现：
+
+```tsx:no-line-numbers
+interface WithMouseState {
+  x: number;
+  y: number;
+}
+
+interface WithMouseHOCProps {
+  mouse: WithMouseState;
+}
+
+function withMouse(WrappedComponent: JSXElementConstructor<WithMouseHOCProps>) {
+  class WithMouse extends Component<{}, WithMouseState> {
+    static displayName = `WithMouse(${WrappedComponent.name})`;
+
+    state = { x: 0, y: 0 };
+
+    handleMouseMove: MouseEventHandler<HTMLDivElement> = (event) => {
+      this.setState({
+        x: event.clientX,
+        y: event.clientY,
+      });
+    };
+
+    render() {
+      return (
+        <div style={{ height: '100vh' }} onMouseMove={this.handleMouseMove}>
+          <WrappedComponent {...this.props} mouse={this.state} />
+        </div>
+      );
+    }
+  }
+
+  return WithMouse;
+}
+
+function MyComponent({ mouse }: WithMouseHOCProps) {
+  return (
+    <>
+      <h1>移动鼠标!</h1>
+      <p>
+        当前的鼠标位置是 ({mouse.x}, {mouse.y})
+      </p>
+    </>
+  );
+}
+
+// 现在使用 withMouse(MyComponent) 就可以实现预期效果
+```
+
+编写 HOC 时应该遵循以下约定：
+
+- HOC 应该透传与自身无关的 props，参考上例。
+- 最大化可组合性，参考 Redux 的 [`connect`](https://github.com/reduxjs/react-redux/blob/master/docs/api/connect.md#connect) 函数。
+- 包装显示名称以便轻松调试，设置类组件的 `static displayName` 属性，参考上例。
+
+注意事项：
+
+- 不要在 render 方法中使用 HOC，不然会导致每次渲染子组件都会进行卸载然后重新挂载。这不仅仅是性能问题，重新挂载组件会导致该组件及其所有子组件的状态丢失。
+- 务必复制静态方法，可以使用 [hoist-non-react-statics](https://github.com/mridgway/hoist-non-react-statics) 自动拷贝所有非 React 静态方法。另一个可行的方案是直接将需要的静态方法导出。
+- Refs 不会被传递，不过可以[借助 forwardRef 来进行 Refs 转发](https://reactjs.org/docs/forwarding-refs.html#forwarding-refs-in-higher-order-components)。
