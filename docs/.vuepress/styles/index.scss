@@ -4,42 +4,7 @@ body,
   height: 100%;
 }
 
-#app {
-  overflow: hidden;
-}
-
-.theme-container {
-  height: 100%;
-  overflow: hidden;
-  /* 下面样式用来解决iOS中元素transform导致父级overflow:hidden失效问题 */
-  backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
-}
-
-.page {
-  --padding-bottom: 2rem;
-  padding-bottom: var(--padding-bottom);
-  height: calc(100% - var(--navbar-height) - var(--padding-bottom));
-  overflow-y: auto;
-}
-
 .theme-default-content {
-  --meta-height: 4rem;
-
-  @media (max-width: 959px) {
-    --meta-height: 11rem;
-  }
-
-  @media (max-width: 719px) {
-    --meta-height: 12rem;
-  }
-
-  @media (max-width: 419px) {
-    --meta-height: 10rem;
-  }
-
-  min-height: calc(100% - var(--meta-height));
-
   img[alt='文燚的博客'] {
     width: 50%;
     transform: translateX(50%);
