@@ -28,6 +28,10 @@ export default defineUserConfig({
                 text: 'CSS',
                 link: '/css',
               },
+              {
+                text: 'Node.js',
+                link: '/nodejs/',
+              },
             ],
           },
           {
