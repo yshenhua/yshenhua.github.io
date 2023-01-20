@@ -1,0 +1,1 @@
+const e=JSON.parse('{"key":"v-d7a4cff6","path":"/windows/","title":"Microsoft Windows","lang":"zh","frontmatter":{"sidebar":false,"contributors":false,"lastUpdated":false},"excerpt":"","headers":[],"git":{"updatedTime":1635091958000,"contributors":[{"name":"\u6587\u71DA","email":"yshenhua@gmail.com","commits":1}]},"filePathRelative":"windows/README.md"}');export{e as data};

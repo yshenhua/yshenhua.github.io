@@ -1,0 +1,1 @@
+const a=JSON.parse('{"key":"v-b7624ef4","path":"/angular/","title":"Angular","lang":"zh","frontmatter":{"sidebar":false,"contributors":false,"lastUpdated":false},"excerpt":"","headers":[],"git":{"updatedTime":1664514247000,"contributors":[{"name":"\u6587\u71DA","email":"yshenhua@gmail.com","commits":3}]},"filePathRelative":"angular/README.md"}');export{a as data};
