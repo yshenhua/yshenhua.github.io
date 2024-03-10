@@ -2,10 +2,11 @@
   "name": "yshenhua.github.io",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "main": "index.js",
   "scripts": {
-    "docs:dev": "vuepress dev docs",
-    "docs:build": "vuepress build docs",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
     "prepare": "husky install"
   },
   "repository": {
@@ -20,12 +21,12 @@
   },
   "homepage": "https://github.com/yshenhua/yshenhua.github.io#readme",
   "devDependencies": {
-    "@commitlint/cli": "^15.0.0",
-    "@commitlint/config-conventional": "^15.0.0",
-    "husky": "^7.0.4",
-    "lint-staged": "^13.0.3",
-    "prettier": "2.7.1",
-    "vuepress": "^2.0.0-beta.49"
+    "@commitlint/cli": "^19.0.3",
+    "@commitlint/config-conventional": "^19.0.3",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^2.8.8",
+    "vitepress": "^1.0.0-rc.45"
   },
   "commitlint": {
     "extends": [
