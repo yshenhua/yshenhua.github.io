@@ -42,13 +42,11 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # 部署到 gh-pages 分支
-          name: gh-pages
           path: docs/.vitepress/dist
   # 部署工作
   deploy:
     environment:
-      name: gh-pages
+      name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     needs: build
     runs-on: ubuntu-latest
