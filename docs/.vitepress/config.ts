@@ -201,7 +201,23 @@ export default defineConfig({
   lang: 'zh-Hans',
   title: '文燚的博客',
   description: '学习笔记',
-  head: [['link', { rel: 'icon', href: 'https://github.githubassets.com/favicons/favicon.png' }]],
+  head: [
+    [
+      'link',
+      {
+        rel: 'icon',
+        href: 'https://github.githubassets.com/favicons/favicon.png',
+      },
+    ],
+    [
+      'script',
+      {
+        async: 'true',
+        crossorigin: 'anonymous',
+        src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7660586877202674',
+      },
+    ],
+  ],
   themeConfig: {
     // logo: 'https://avatars.githubusercontent.com/u/23024424?v=4',
     nav,
