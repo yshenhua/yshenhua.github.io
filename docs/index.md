@@ -2,7 +2,7 @@
 layout: home
 hero:
   name: 文燚的博客
-  text: 某人的个人博客网站
+  text: 一个无聊的博客网站
   tagline: 随便记点什么来证明我身处这个世界
   image:
     src: /images/words.png
@@ -10,8 +10,9 @@ hero:
   actions:
     - theme: brand
       text: 查看学习笔记
-      link: /guide/what-is-vitepress
+      link: /catalog/
     - theme: alt
       text: GitHub 主页
-      link: https://github.com/vuejs/vitepress
+      link: https://github.com/yshenhua
+pageClass: home-page
 ---

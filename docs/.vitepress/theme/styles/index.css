@@ -1,0 +1,11 @@
+:root {
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #bd34fe 30%, #41d1ff);
+}
+
+.Layout:not(.home-page) .VPNavBarTitle .title {
+  background: var(--vp-home-hero-name-background);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: var(--vp-home-hero-name-color);
+}
