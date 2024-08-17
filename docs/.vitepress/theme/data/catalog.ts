@@ -51,6 +51,12 @@ const items = [
     ],
   },
   {
+    group: Group.Two,
+    text: 'Vue.js',
+    folder: 'vuejs',
+    items: [{ folder: 'Vue 组件基础（组合式 API）', file: 'vue_component_basic' }],
+  },
+  {
     group: Group.Three,
     text: 'Prettier',
     folder: 'prettier',
