@@ -6,7 +6,7 @@ import hrefStore from '../stores/hrefs';
 
 const router = useRouter();
 const handleClick = (toHref) => {
-  hrefStore.set(new URL(toHref, location.origin).href);
+  hrefStore.set(toHref);
   router.go(toHref);
 };
 </script>

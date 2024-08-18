@@ -1,12 +1,13 @@
 <script setup lang="ts">
 import { useRouter } from 'vitepress';
 import DefaultTheme from 'vitepress/theme';
+import { onMounted } from 'vue';
 import hrefStore from '../stores/hrefs';
 
-hrefStore.set(location.href);
+onMounted(() => hrefStore.set());
 const router = useRouter();
 const handleClick = () => {
-  hrefStore.set(location.href);
+  hrefStore.set();
   router.go(hrefStore.group ? `/catalog/#${hrefStore.group}` : '/catalog/');
 };
 </script>
