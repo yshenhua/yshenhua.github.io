@@ -54,7 +54,10 @@ const items = [
     group: Group.Two,
     text: 'Vue.js',
     folder: 'vuejs',
-    items: [{ folder: 'Vue 组件基础（组合式 API）', file: 'vue_component_basic' }],
+    items: [
+      { folder: 'Vue 组件基础（组合式 API）', file: 'vue_component_basic' },
+      { folder: '使用 VitePress 快速搭建静态站点', file: 'use_vitepress' },
+    ],
   },
   {
     group: Group.Three,
