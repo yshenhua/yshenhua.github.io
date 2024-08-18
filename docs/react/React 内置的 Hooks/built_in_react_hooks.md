@@ -22,7 +22,7 @@ const [state, dispatch] = useReducer(reducer, initialArg, init?);
 const value = useContext(SomeContext);
 ```
 
-`useContext` 接收一个 [Context](../React%20Context/react_context.md) 对象并返回该 Context 的当前值。
+`useContext` 接收一个 [Context](./react-context) 对象并返回该 Context 的当前值。
 
 ## useEffect
 
@@ -54,7 +54,7 @@ useInsertionEffect(setup, dependencies?);
 const ref = useRef(initialValue);
 ```
 
-`useRef` 返回一个 ref 对象，其 `.current` 属性的初始值为 initialValue。ref 对象的一个作用是通过 `ref` 属性附加到 React 元素上，[访问 DOM 节点或 React 组件](../React%20组件/react_component.html#访问)。除此之外，ref 对象还可以用来保存任意值，类似于一个 class 的实例属性。使用 `useRef()` 和创建一个 `{ current: ... }` 对象的区别是，它会在每次渲染时返回同一个 ref 对象，而不是重新创建一个。
+`useRef` 返回一个 ref 对象，其 `.current` 属性的初始值为 initialValue。ref 对象的一个作用是通过 `ref` 属性附加到 React 元素上，[访问 DOM 节点或 React 组件](./react-component#访问)。除此之外，ref 对象还可以用来保存任意值，类似于一个 class 的实例属性。使用 `useRef()` 和创建一个 `{ current: ... }` 对象的区别是，它会在每次渲染时返回同一个 ref 对象，而不是重新创建一个。
 
 ## useImperativeHandle
 
@@ -62,7 +62,7 @@ const ref = useRef(initialValue);
 useImperativeHandle(ref, createHandle, dependencies?);
 ```
 
-`useImperativeHandle` 可以在[转发 ref ](../React%20组件/react_component.html#访问)时自定义暴露给父组件的实例值，要与 `forwradRef` 一起使用。
+`useImperativeHandle` 可以在[转发 ref ](./react-component#访问)时自定义暴露给父组件的实例值，要与 `forwradRef` 一起使用。
 
 ## useCallback
 

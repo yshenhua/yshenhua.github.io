@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useRouter } from 'vitepress';
+import { rewriteFilePath } from '../utils';
 import catalog from '../data/catalog';
 import hrefStore from '../stores/hrefs';
 
@@ -23,9 +24,9 @@ const handleClick = (toHref) => {
           <a
             v-for="item2 in item1.items"
             :key="item2.text"
-            @click="handleClick(`/${item1.folder}/${item2.folder}/${item2.file}`)"
+            @click="handleClick(`/${item1.folder}/${rewriteFilePath(item2.file)}`)"
             class="link"
-            :class="{ active: item2.folder === hrefStore.item2 }"
+            :class="{ active: rewriteFilePath(item2.file) === hrefStore.item2 }"
           >
             <p class="text">{{ item2.folder }}</p>
           </a>

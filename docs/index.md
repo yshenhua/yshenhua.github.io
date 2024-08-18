@@ -2,7 +2,7 @@
 layout: home
 hero:
   name: 文燚的博客
-  text: 一个无聊的博客网站
+  text:
   tagline: 随便记点什么来证明我身处这个世界
   image:
     src: /images/words.png

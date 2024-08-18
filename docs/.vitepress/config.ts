@@ -1,5 +1,15 @@
 import { defineConfig } from 'vitepress';
-import catalog, { Group, items } from './theme/data/catalog';
+import { rewriteFilePath } from './theme/utils';
+import catalog, { items } from './theme/data/catalog';
+
+const rewrites = Object.fromEntries(
+  items.flatMap((item) =>
+    item.items.map((item2) => [
+      `${item.folder}/${item2.folder}/${item2.file}.md`,
+      `${item.folder}/${rewriteFilePath(item2.file)}.md`,
+    ]),
+  ),
+);
 
 const sidebar = Object.fromEntries(
   items.map((item) => [
@@ -15,7 +25,7 @@ const sidebar = Object.fromEntries(
         collapsed,
         items: item1.items.map((item2) => ({
           text: item2.folder,
-          link: `/${item1.folder}/${item2.folder}/${item2.file}`,
+          link: `/${item1.folder}/${rewriteFilePath(item2.file)}`,
         })),
       };
     }),
@@ -44,6 +54,7 @@ export default defineConfig({
     ],
   ],
   // srcDir: './docs', // 相对于项目根目录
+  rewrites,
   cleanUrls: true,
   themeConfig: {
     // logo: '/logo.svg', // 文件放置在源目录（srcDir）的 public 目录中
