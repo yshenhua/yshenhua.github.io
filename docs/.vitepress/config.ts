@@ -44,14 +44,6 @@ export default defineConfig({
         href: 'https://github.githubassets.com/favicons/favicon.png',
       },
     ],
-    [
-      'script',
-      {
-        async: 'true',
-        crossorigin: 'anonymous',
-        src: 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7660586877202674',
-      },
-    ],
   ],
   // srcDir: './docs', // 相对于项目根目录
   rewrites,
