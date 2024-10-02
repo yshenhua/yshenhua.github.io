@@ -3,8 +3,13 @@ import { useRouter } from 'vitepress';
 import DefaultTheme from 'vitepress/theme';
 import { onMounted } from 'vue';
 import hrefStore from '../stores/hrefs';
+import { initObserverAdsbygoogle } from '../utils';
 
-onMounted(() => hrefStore.set());
+onMounted(() => {
+  hrefStore.set();
+  initObserverAdsbygoogle();
+});
+
 const router = useRouter();
 const handleClick = () => {
   hrefStore.set();
@@ -35,6 +40,17 @@ const handleClick = () => {
           </svg>
         </a>
       </div>
+    </template>
+    <template #doc-footer-before>
+      <!-- 文章结尾展示广告 -->
+      <ins
+        id="adsbygoogle-ins"
+        class="adsbygoogle"
+        data-ad-client="ca-pub-7660586877202674"
+        data-ad-slot="1726013858"
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
     </template>
   </DefaultTheme.Layout>
 </template>
@@ -76,5 +92,15 @@ const handleClick = () => {
 
 .link:hover .back {
   fill: var(--vp-c-text-2);
+}
+
+.adsbygoogle {
+  display: block;
+}
+.adsbygoogle[data-ad-status='filled'] {
+  margin-bottom: 14px;
+}
+.adsbygoogle[data-ad-status='unfilled'] {
+  display: none;
 }
 </style>
