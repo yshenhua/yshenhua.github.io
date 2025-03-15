@@ -4,6 +4,7 @@ import DefaultTheme from 'vitepress/theme';
 import { onMounted } from 'vue';
 import hrefStore from '../stores/hrefs';
 import { initObserverAdsbygoogle } from '../utils';
+import Loading from './Loading.vue';
 
 onMounted(() => {
   hrefStore.set();
@@ -18,6 +19,7 @@ const handleClick = () => {
 </script>
 
 <template>
+  <Loading />
   <DefaultTheme.Layout>
     <template #sidebar-nav-before>
       <div class="catalog-group">
