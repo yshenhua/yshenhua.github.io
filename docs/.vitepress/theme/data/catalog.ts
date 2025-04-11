@@ -69,7 +69,10 @@ const items = [
     group: Group.Four,
     text: 'Git',
     folder: 'git',
-    items: [{ folder: '使用 commitlint 规范 commit 信息', file: 'use_commitlint' }],
+    items: [
+      { folder: 'Git 常用命令', file: 'git_common_commands' },
+      { folder: '使用 commitlint 规范 commit 信息', file: 'use_commitlint' },
+    ],
   },
   {
     group: Group.Five,
