@@ -71,6 +71,7 @@ const items = [
     folder: 'git',
     items: [
       { folder: 'Git 常用命令', file: 'git_common_commands' },
+      { folder: 'Git 身份验证', file: 'git_authentication' },
       { folder: '使用 commitlint 规范 commit 信息', file: 'use_commitlint' },
     ],
   },
