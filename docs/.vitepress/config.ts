@@ -44,6 +44,12 @@ export default defineConfig({
         href: 'https://github.githubassets.com/favicons/favicon.png',
       },
     ],
+    ['script', { async: 'true', src: 'https://www.googletagmanager.com/gtag/js?id=G-GZ7JM35BHG' }],
+    [
+      'script',
+      {},
+      `window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'G-GZ7JM35BHG');`,
+    ],
     [
       'script',
       {
