@@ -4,6 +4,7 @@ enum Group {
   Three = '代码规范',
   Four = '版本控制',
   Five = '操作系统',
+  Six = '第三方平台',
 }
 
 const items = [
@@ -80,6 +81,12 @@ const items = [
     text: 'Microsoft Windows',
     folder: 'windows',
     items: [{ folder: '如何制作启动盘？', file: 'make_startup_disk' }],
+  },
+  {
+    group: Group.Six,
+    text: 'Google Analytics',
+    folder: 'analytics',
+    items: [{ folder: '如何接入 Google Analytics？', file: 'use_analytics' }],
   },
 ];
 
